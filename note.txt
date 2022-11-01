@@ -1,0 +1,9 @@
+1. Static S3 website
+2. EC2
+  - SSH
+  - VPN
+  - SSL
+  - Nginx port 80 (static website)
+
+
+Gimic SNS
