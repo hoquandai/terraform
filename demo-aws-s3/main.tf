@@ -14,8 +14,33 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-resource "aws_s3_bucket_website_configuration" "demo-static-web" {
-  bucket = aws_s3_bucket.example.bucket
+resource "aws_s3_bucket" "bucket" {
+  bucket = "daiho-demo-aws-s3"
+  policy = file("policy.json")
+
+  tags = {
+    Environment = "dev"
+  }
+}
+
+resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "public-read"
+}
+
+resource "aws_s3_bucket_object" "files" {
+  for_each = fileset(var.website_root, "**")
+
+  bucket       = aws_s3_bucket.bucket.id
+  key          = each.key
+  source       = "${var.website_root}/${each.key}"
+  source_hash  = filemd5("${var.website_root}/${each.key}")
+  acl          = "public-read"
+  content_type = "text/html"
+}
+
+resource "aws_s3_bucket_website_configuration" "static_website" {
+  bucket = aws_s3_bucket.bucket.id
 
   index_document {
     suffix = "index.html"
@@ -23,14 +48,5 @@ resource "aws_s3_bucket_website_configuration" "demo-static-web" {
 
   error_document {
     key = "error.html"
-  }
-
-  routing_rule {
-    condition {
-      key_prefix_equals = "docs/"
-    }
-    redirect {
-      replace_key_prefix_with = "documents/"
-    }
   }
 }
