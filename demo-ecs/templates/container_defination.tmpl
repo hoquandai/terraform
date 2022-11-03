@@ -1,0 +1,17 @@
+[
+  {
+    "name": "${name}",
+    "image": "${image}",
+    "cpu": ${cpu},
+    "memory": ${memory},
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${logs_group}",
+          "awslogs-region": "${logs_region}",
+          "awslogs-stream-prefix": "${logs_group}-stream"
+        }
+    }
+  }
+]
