@@ -5,7 +5,7 @@ variable "name" {
 
 variable "image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "public.ecr.aws/amazonlinux/amazonlinux:2022"
+  default     = "165541912265.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
 }
 
 variable "cpu" {
