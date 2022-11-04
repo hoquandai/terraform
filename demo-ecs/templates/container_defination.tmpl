@@ -12,6 +12,12 @@
           "awslogs-region": "${logs_region}",
           "awslogs-stream-prefix": "${logs_group}-stream"
         }
-    }
+    },
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ]
   }
 ]

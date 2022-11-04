@@ -24,8 +24,14 @@ resource "aws_ecs_service" "service" {
   // required for task definitions that use the awsvpc network mode
   network_configuration {
     security_groups = [aws_security_group.sg.id]
-    subnets         = aws_subnet.private_subnet.*.id // TODO: get from terraform remote state
+    subnets         = [aws_subnet.private.id] // TODO: get from terraform remote state
   }
 
-  depends_on = [aws_cloudwatch_log_group.log, aws_iam_role_policy_attachment.ecs_role_policy]
+  load_balancer {
+    target_group_arn = aws_alb_target_group.alb_group.id
+    container_name   = var.name
+    container_port   = 80
+  }
+
+  depends_on = [aws_alb_listener.front_end, aws_cloudwatch_log_group.log, aws_iam_role_policy_attachment.ecs_role_policy]
 }

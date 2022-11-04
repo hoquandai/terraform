@@ -14,3 +14,7 @@ data "template_file" "container_definitions" {
     logs_region = "us-east-1"
   }
 }
+
+data "aws_iam_policy_document" "s3_ecr_access" {
+
+}

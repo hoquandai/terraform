@@ -1,0 +1,13 @@
+{
+  "Statement": [
+    {
+      "Sid": "PutOnly",
+      "Principal": "*",
+      "Action": [
+        "cloudwatch:PutMetricData"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "Statement": [
+    {
+      "Sid": "Get access to bucket only",
+      "Principal": "*",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
