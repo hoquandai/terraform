@@ -2,6 +2,22 @@ locals {
   custom_name = "${var.org_name}-${var.app_name}-${var.env}"
 }
 
+data "aws_iam_policy_document" "access_policies" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "es:ESHttp*"
+    ]
+    resources = [
+      "${aws_opensearch_domain.main.arn}/*"
+    ]
+  }
+}
+
 resource "aws_iam_service_linked_role" "main" {
   aws_service_name = "opensearchservice.amazonaws.com"
 }
@@ -15,17 +31,37 @@ resource "aws_opensearch_domain" "main" {
     instance_type  = var.instance_type
     instance_count = var.instance_count > length(var.az_ids) ? var.instance_count : length(var.az_ids)
 
-    zone_awareness_enabled = length(var.az_ids) > 1 ? true : false
-    zone_awareness_config {
-      availability_zone_count = length(var.az_ids)
-    }
+    zone_awareness_enabled = false
+    # zone_awareness_config {
+    #   availability_zone_count = length(var.az_ids)
+    # }
 
     dedicated_master_enabled = var.dedicated_master_count > 0 ? true : false
     dedicated_master_count   = var.dedicated_master_count
     dedicated_master_type    = var.dedicated_master_type
+  }
 
-    warm_enabled = var.warm_enabled
-    warm_count   = var.warm_count
+  advanced_security_options {
+    enabled                        = true
+    internal_user_database_enabled = true
+    anonymous_auth_enabled         = true
+    master_user_options {
+      master_user_name     = var.master_user_name
+      master_user_password = var.master_user_password
+    }
+  }
+
+  node_to_node_encryption {
+    enabled = true
+  }
+
+  domain_endpoint_options {
+    enforce_https       = true
+    tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+  }
+
+  encrypt_at_rest {
+    enabled = true
   }
 
   ebs_options {
@@ -34,12 +70,8 @@ resource "aws_opensearch_domain" "main" {
     volume_type = var.ebs_volume_type
   }
 
-  encrypt_at_rest {
-    enabled = true
-  }
-
   vpc_options {
-    subnet_ids         = [aws_subnet.private1.id, aws_subnet.private2.id, aws_subnet.private3.id]
+    subnet_ids         = [aws_subnet.private.id]
     security_group_ids = [aws_security_group.opensearch.id]
   }
 
@@ -61,20 +93,8 @@ resource "aws_opensearch_domain" "main" {
   depends_on = [aws_iam_service_linked_role.main]
 }
 
-resource "aws_opensearch_domain_policy" "main" {
-  domain_name = aws_opensearch_domain.main.domain_name
+# resource "aws_opensearch_domain_policy" "main" {
+#   domain_name = aws_opensearch_domain.main.domain_name
 
-  access_policies = <<POLICIES
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "es:*",
-      "Principal": "*",
-      "Effect": "Allow",
-      "Resource": "${aws_opensearch_domain.main.arn}/*"
-    }
-  ]
-}
-POLICIES
-}
+#   access_policies = data.aws_iam_policy_document.access_policies.json
+# }

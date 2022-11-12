@@ -44,9 +44,7 @@ variable "az_ids" {
   description = "Availability zone IDS for data nodes."
   type        = list(string)
   default = [
-    "us-east-1a",
-    "us-east-1b",
-    "us-east-1c"
+    "us-east-1a"
   ]
 }
 
@@ -74,18 +72,6 @@ variable "dedicated_master_type" {
   default     = "m5.large.search"
 }
 
-variable "warm_enabled" {
-  description = "Whether to enable warm storage."
-  type        = bool
-  default     = false
-}
-
-variable "warm_count" {
-  description = "Number of warm nodes in the cluster. (2-150)"
-  type        = number
-  default     = 2
-}
-
 variable "engine_version" {
   description = "OpenSearch engine version."
   type        = string
@@ -102,4 +88,16 @@ variable "instance_count" {
   description = "OpenSearch instance count."
   type        = number
   default     = 1
+}
+
+variable "master_user_name" {
+  description = "OpenSearch Main user's username."
+  type        = string
+  default     = "master"
+}
+
+variable "master_user_password" {
+  description = "OpenSearch Main user's password."
+  type        = string
+  default     = "master"
 }

@@ -9,22 +9,10 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-resource "aws_subnet" "private1" {
+resource "aws_subnet" "private" {
   availability_zone = var.az_ids[0]
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = "10.0.1.0/24"
-}
-
-resource "aws_subnet" "private2" {
-  availability_zone = var.az_ids[1]
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.2.0/24"
-}
-
-resource "aws_subnet" "private3" {
-  availability_zone = var.az_ids[2]
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.3.0/24"
 }
 
 resource "aws_security_group" "opensearch" {
@@ -37,7 +25,7 @@ resource "aws_security_group" "opensearch" {
     to_port   = 443
     protocol  = "tcp"
     cidr_blocks = [
-      aws_vpc.vpc.cidr_block,
+      aws_vpc.main.cidr_block
     ]
   }
 
