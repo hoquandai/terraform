@@ -44,7 +44,8 @@ variable "az_ids" {
   description = "Availability zone IDS for data nodes."
   type        = list(string)
   default = [
-    "us-east-1a"
+    "us-east-1a",
+    "us-east-1b"
   ]
 }
 
@@ -99,5 +100,5 @@ variable "master_user_name" {
 variable "master_user_password" {
   description = "OpenSearch Main user's password."
   type        = string
-  default     = "master"
+  default     = "Master_1_2_3"
 }
