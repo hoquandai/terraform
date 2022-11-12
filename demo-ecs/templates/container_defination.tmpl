@@ -5,6 +5,9 @@
     "cpu": ${cpu},
     "memory": ${memory},
     "networkMode": "awsvpc",
+    "linuxParameters": {
+      "initProcessEnabled": true
+    },
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

@@ -31,9 +31,9 @@ resource "aws_opensearch_domain" "main" {
     instance_type  = var.instance_type
     instance_count = var.instance_count > length(var.az_ids) ? var.instance_count : length(var.az_ids)
 
-    zone_awareness_enabled = length(var.az_ids) >=2 ? true : false
+    zone_awareness_enabled = length(var.az_ids) >= 2 ? true : false
     zone_awareness_config {
-      availability_zone_count = length(var.az_ids) >=2 ? length(var.az_ids) : null
+      availability_zone_count = length(var.az_ids) >= 2 ? length(var.az_ids) : null
     }
 
     dedicated_master_enabled = var.dedicated_master_count > 0 ? true : false

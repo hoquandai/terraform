@@ -6,6 +6,7 @@ resource "aws_ecs_task_definition" "task" {
   family                = var.name
   container_definitions = data.template_file.container_definitions.rendered
   execution_role_arn    = aws_iam_role.ecs_execution_role.arn
+  task_role_arn         = aws_iam_role.ecs_task_role.arn
 
   network_mode = "awsvpc"
 
@@ -20,6 +21,7 @@ resource "aws_ecs_service" "service" {
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+  enable_execute_command = true
 
   // required for task definitions that use the awsvpc network mode
   network_configuration {
