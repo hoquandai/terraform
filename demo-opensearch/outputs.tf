@@ -8,5 +8,5 @@ output "domain_name" {
   value = aws_opensearch_domain.main.domain_name
 }
 output "endpoint" {
-  value = aws_opensearch_domain.main.endpoint
+  value = "https://${aws_opensearch_domain.main.endpoint}"
 }

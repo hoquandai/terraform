@@ -5,7 +5,7 @@ variable "name" {
 
 variable "image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "857126229905.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
+  default     = "701810386758.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
 }
 
 variable "cpu" {
@@ -21,4 +21,19 @@ variable "memory" {
 variable "logs_group" {
   description = "Logs group to provision"
   default     = "sns-log"
+}
+
+variable "service_names" {
+  type = list(string)
+  default = ["sns-cluster-service"]
+}
+
+variable "cluster_name" {
+  type = string
+  default = "sns-cluster"
+}
+
+variable "aws_region" {
+  type = string
+  default = "us-east-1"
 }

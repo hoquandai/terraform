@@ -177,9 +177,9 @@ resource "aws_security_group" "opensearch" {
   }
 }
 
-resource "aws_iam_service_linked_role" "main" {
-  aws_service_name = "opensearchservice.amazonaws.com"
-}
+# resource "aws_iam_service_linked_role" "main" {
+#   aws_service_name = "opensearchservice.amazonaws.com"
+# }
 
 resource "aws_opensearch_domain" "main" {
   domain_name    = "${local.custom_name}-opensearch"
@@ -231,22 +231,22 @@ resource "aws_opensearch_domain" "main" {
     security_group_ids = [aws_security_group.opensearch.id]
   }
 
-  # log_publishing_options {
-  #   cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch.arn
-  #   log_type                 = "INDEX_SLOW_LOGS"
-  # }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch.arn
+    log_type                 = "INDEX_SLOW_LOGS"
+  }
 
-  # log_publishing_options {
-  #   cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch.arn
-  #   log_type                 = "SEARCH_SLOW_LOGS"
-  # }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch.arn
+    log_type                 = "SEARCH_SLOW_LOGS"
+  }
 
   log_publishing_options {
     cloudwatch_log_group_arn = aws_cloudwatch_log_group.opensearch.arn
     log_type                 = "ES_APPLICATION_LOGS"
   }
 
-  depends_on = [aws_iam_service_linked_role.main]
+  # depends_on = [aws_iam_service_linked_role.main]
 }
 
 resource "aws_opensearch_domain_policy" "main" {
