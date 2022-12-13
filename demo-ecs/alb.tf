@@ -1,23 +1,23 @@
-resource "aws_s3_bucket" "lb_logs" {
-  bucket = "${var.name}-lb-logs123"
-}
+# resource "aws_s3_bucket" "lb_logs" {
+#   bucket = "${var.name}-lb-logs1234"
+# }
 
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.lb_logs.id
-  policy = file("policies/alb_access_log.json")
-}
+# resource "aws_s3_bucket_policy" "bucket_policy" {
+#   bucket = aws_s3_bucket.lb_logs.id
+#   policy = file("policies/alb_access_log.json")
+# }
 
 resource "aws_alb" "alb" {
   name            = "${var.name}-load-balancer"
   subnets         = [aws_subnet.public.id, aws_subnet.public2.id]
   security_groups = [aws_security_group.alb_sg.id]
-  depends_on      = [aws_s3_bucket.lb_logs]
+  # depends_on      = [aws_s3_bucket.lb_logs]
 
-  access_logs {
-    bucket  = aws_s3_bucket.lb_logs.bucket
-    prefix  = var.name
-    enabled = true
-  }
+  # access_logs {
+  #   bucket  = aws_s3_bucket.lb_logs.bucket
+  #   prefix  = var.name
+  #   enabled = true
+  # }
 }
 
 resource "aws_alb_target_group" "alb_group" {

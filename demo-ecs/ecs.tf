@@ -32,7 +32,36 @@ resource "aws_ecs_cluster" "cluster" {
 
 resource "aws_ecs_task_definition" "task" {
   family                = var.name
-  container_definitions = data.template_file.container_definitions.rendered
+  container_definitions = templatefile("templates/container_defination.tmpl", {
+    name        = var.name
+    image       = var.image
+    cpu         = var.cpu
+    memory      = var.memory
+    logs_group  = var.logs_group
+    logs_region = "us-east-1"
+    command     = null
+  })
+  execution_role_arn    = aws_iam_role.ecs_execution_role.arn
+  task_role_arn         = aws_iam_role.ecs_task_role.arn
+
+  network_mode = "awsvpc"
+
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.cpu
+  memory                   = var.memory
+}
+
+resource "aws_ecs_task_definition" "cron" {
+  family                = var.name
+  container_definitions = templatefile("templates/container_defination.tmpl", {
+    name        = var.name
+    image       = var.cron_image
+    cpu         = var.cpu
+    memory      = var.memory
+    logs_group  = var.logs_group
+    logs_region = "us-east-1"
+    command     = null
+  })
   execution_role_arn    = aws_iam_role.ecs_execution_role.arn
   task_role_arn         = aws_iam_role.ecs_task_role.arn
 

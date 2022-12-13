@@ -5,7 +5,7 @@ variable "name" {
 
 variable "image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "701810386758.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
+  default     = "999470467758.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
 }
 
 variable "cpu" {
@@ -36,4 +36,19 @@ variable "cluster_name" {
 variable "aws_region" {
   type = string
   default = "us-east-1"
+}
+
+variable "schedule_expression" {
+  type = string
+  default = "rate(3 minutes)"
+}
+
+variable "sns_topic_arn" {
+  type = string
+  default = "arn:aws:sns:us-east-1:999470467758:daiho"
+}
+
+variable "cron_image" {
+  description = "Docker image to run in the ECS cluster"
+  default     = "999470467750.dkr.ecr.us-east-1.amazonaws.com/sns:latest"
 }

@@ -5,6 +5,7 @@
     "cpu": ${cpu},
     "memory": ${memory},
     "networkMode": "awsvpc",
+    "command": %{ if command == null }[]%{ else }["${command}"]%{ endif },
     "linuxParameters": {
       "initProcessEnabled": true
     },

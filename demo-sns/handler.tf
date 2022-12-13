@@ -11,17 +11,16 @@ module "slack_lambda" {
   source = "../demo-lambda"
 
   configuration = {
-    filename = "functions/slack.rb.zip",
+    filename = "functions/scheduled_ecs.rb.zip",
     function_name = "post_slack_message",
-    handler = "slack.lambda_handler"
+    handler = "scheduled_ecs.lambda_handler"
     runtime = "ruby2.7",
     architectures = ["x86_64"]
   }
 
   environment_variables = {
     ENVIRONMENT = "dev"
-    SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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",
-    MATTERMOST_WEBHOOK_URL = "https://chat.executionlab.asia/hooks/qwwig7dbrbgouj7coiqmtt7tzw"
+    SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
   }
 
   allowed_triggers = {
@@ -37,3 +36,4 @@ module "slack_lambda" {
   log_group_arn = aws_cloudwatch_log_group.sns_lambda.arn
   attach_log_policy = true
 }
+
