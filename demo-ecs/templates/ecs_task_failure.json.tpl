@@ -9,14 +9,9 @@
     "lastStatus": [
       "STOPPED"
     ],
-    "stoppedReason": [
-      "Essential container in task exited"
+    "stopCode": [
+      { "exists": true  }
     ],
-    "containers": {
-      "exitCode": [
-        1
-      ]
-    },
     "clusterArn": ["${cluster_arn}"],
     "taskDefinitionArn": ["${task_definition_arn}"]
   }

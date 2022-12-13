@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "cron" {
     memory      = var.memory
     logs_group  = var.logs_group
     logs_region = "us-east-1"
-    command     = null
+    command     = "echo 'Helloworld'"
   })
   execution_role_arn    = aws_iam_role.ecs_execution_role.arn
   task_role_arn         = aws_iam_role.ecs_task_role.arn
@@ -73,8 +73,7 @@ resource "aws_ecs_task_definition" "cron" {
 }
 
 resource "aws_ecs_service" "service" {
-  count           = 2
-  name            = "${var.name}-${count.index}-service"
+  name            = "${var.name}-service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 1

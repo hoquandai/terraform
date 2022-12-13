@@ -1,1 +1,50 @@
 Terraform Token: qYD8gyb8Rhc1bA.atlasv1.ABjdWjjoar1rMSMAZo9x9yE1vkI2yq15OHt6bOH0VzJhzh5PEgpOIipBnyKCoxRhG8U
+
+
+{
+  "detail": {
+    "clusterArn": [
+      "arn:aws:ecs:us-east-1:043525666653:cluster/sns-cluster"
+    ],
+    "lastStatus": [
+      "STOPPED"
+    ],
+    "stoppedReason": [
+      "Essential container in task exited"
+    ],
+    "taskDefinitionArn": [
+      "arn:aws:ecs:us-east-1:043525666653:task-definition/sns-cluster:1"
+    ]
+  },
+  "detail-type": [
+    "ECS Task State Change"
+  ],
+  "source": [
+    "aws.ecs"
+  ]
+}
+
+{
+  "source": [
+    "aws.ecs"
+  ],
+  "detail-type": [
+    "ECS Task State Change"
+  ],
+  "detail": {
+    "clusterArn": [
+      "arn:aws:ecs:us-east-1:043525666653:cluster/sns-cluster"
+    ],
+    "lastStatus": [
+      "STOPPED"
+    ],
+    "stopCode": [
+      { "exists": true  }
+    ]
+  }
+}
+
+aws ecs describe-tasks \
+    --cluster sns-cluster \
+    --tasks arn:aws:ecs:us-east-1:043525666653:task/sns-cluster/c0090789bbc541b193393f1a29923eda \
+    --query "tasks[0].containers[?name=='sns-cluster'].exitCode"

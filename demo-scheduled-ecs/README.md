@@ -4,3 +4,4 @@
 ### Event Message
 - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-event-messages.html
 - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_cwe_events.html#ecs_task_events
+- https://docs.aws.amazon.com/AmazonECS/latest/userguide/stopped-task-errors.html

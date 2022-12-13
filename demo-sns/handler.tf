@@ -20,7 +20,7 @@ module "slack_lambda" {
 
   environment_variables = {
     ENVIRONMENT = "dev"
-    SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+    SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
   }
 
   allowed_triggers = {

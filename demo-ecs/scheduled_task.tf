@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "cloudwatch_assume_role" {
       type = "Service"
       identifiers = [
         "events.amazonaws.com",
-        "ecs-tasks.amazonaws.com",
+        "ecs-tasks.amazonaws.com"
       ]
     }
     actions = ["sts:AssumeRole"]
@@ -56,6 +56,7 @@ resource "aws_iam_policy" "cloudwatch" {
 resource "aws_cloudwatch_event_rule" "run_ecs_task" {
   name                = local.task_name
   schedule_expression = var.schedule_expression
+  is_enabled          = true
 }
 
 resource "aws_cloudwatch_event_target" "run_ecs_task" {
@@ -78,7 +79,8 @@ resource "aws_cloudwatch_event_target" "run_ecs_task" {
 }
 
 resource "aws_cloudwatch_event_rule" "ecs_task_failure" {
-  name        = "${local.task_name}-failed"
+  name        = "${local.task_name}-alarm"
+  is_enabled  = true
   description = "Watch for ${local.task_name} tasks that exit with non zero exit codes"
 
   event_pattern = templatefile("templates/ecs_task_failure.json.tpl", {
@@ -90,12 +92,10 @@ resource "aws_cloudwatch_event_rule" "ecs_task_failure" {
 resource "aws_cloudwatch_event_target" "ecs_task_failure" {
   rule  = aws_cloudwatch_event_rule.ecs_task_failure.name
   arn   = var.sns_topic_arn
-  input = jsonencode({
-    "message" : "Task ${local.task_name} failed."
-  })
+  input = jsonencode({"message" : "Task ${local.task_name} failed."})
 }
 
-data "aws_iam_policy_document" "task_failure" {
+data "aws_iam_policy_document" "ecs_task_failure" {
   statement {
     actions   = ["SNS:Publish"]
     effect    = "Allow"
@@ -108,7 +108,7 @@ data "aws_iam_policy_document" "task_failure" {
   }
 }
 
-resource "aws_sns_topic_policy" "task_failure" {
+resource "aws_sns_topic_policy" "ecs_task_failure" {
   arn    = var.sns_topic_arn
-  policy = data.aws_iam_policy_document.task_failure.json
+  policy = data.aws_iam_policy_document.ecs_task_failure.json
 }
